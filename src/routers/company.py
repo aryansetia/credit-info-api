@@ -10,6 +10,7 @@ from schemas.company import CompanyCreate, CompanyUpdate, CompanyResponse
 
 router = APIRouter()
 
+# POST - to create a new company 
 @router.post("/company", response_model=CompanyResponse, status_code=201)
 def create_company(company: CompanyCreate, db: Session = Depends(get_db)):
     db_company = Company(
@@ -41,6 +42,7 @@ def create_company(company: CompanyCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An unexpected error occurred")
 
 
+# GET - to get all companies
 @router.put("/company/{company_id}", response_model=CompanyResponse)
 def update_company(company_id: str, company: CompanyUpdate, db: Session = Depends(get_db)):
     try:
