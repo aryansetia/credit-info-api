@@ -18,16 +18,6 @@ app.include_router(credits.router)
 def root():
     return {"message": "Welcome to the Credit Information API"}
 
-# @app.exception_handler(RequestValidationError)
-# async def validation_exception_handler(request: Request, exc: RequestValidationError):
-#     return JSONResponse(
-#         status_code=422,
-#         content={
-#             "detail": exc.errors(),
-#             "body": exc.body
-#         },
-#     )
-
 @app.on_event("startup")
 def on_startup():
     create_tables()

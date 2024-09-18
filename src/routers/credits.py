@@ -151,7 +151,7 @@ def update_credit_info(company_id: str, annual_info: Optional[AnnualInformationU
     )
   
 # DELETE - simulate deleting credit information of a company
-@router.delete("/credits/{company_id}", response_model=dict, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/credits/{company_id}", response_model=dict, status_code=status.HTTP_200_OK)
 def delete_credit_info(company_id: str, db: Session = Depends(get_db)):
     company = db.query(Company).filter(
         Company.company_id == company_id).first()

@@ -10,7 +10,16 @@ class LoanBase(BaseModel):
 
     class Config:
         orm_mode = True
-
+        json_schema_extra = {
+            "examples": [
+                {
+                    "loan_amount": 50000,
+                    "taken_on": "2023-08-15T12:34:56Z",
+                    "loan_bank_provider": "Bank of Springfield",
+                    "loan_status": "DUE"
+                }
+            ]
+        }
 class LoanCreate(LoanBase):
     loan_amount: int
     taken_on: datetime

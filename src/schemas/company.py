@@ -15,6 +15,21 @@ class CompanyBase(BaseModel):
     class Config:
         orm_mode = True
 
+        json_schema_extra = {
+            "examples": [
+                {
+                    "name": "Acme Corp",
+                    "company_id": "12345",
+                    "address": "123 Elm Street, Springfield",
+                    "registration_date": "2022-01-01",
+                    "number_of_employees": 100,
+                    "contact_number": "+1-555-1234",
+                    "contact_email": "contact@acme.com",
+                    "company_website": "https://www.acme.com"
+                }
+            ]
+        }
+
 class CompanyCreate(CompanyBase):
     name: str
     company_id: str
