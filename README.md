@@ -20,7 +20,7 @@ To run this project, you need to have Docker and Docker Compose installed on you
 docker-compose up --build
 ```
 3. The FastAPI server will be running on `http://localhost:8000`
-4. Go to `http://localhost:8000/login` and enter the hardcoded username: john_doe and password: 1234 to get the JWT token.
+4. Go to `http://localhost:8000/login` and enter the hardcoded username: `john_doe` and password: `1234` to get the JWT token.
 5. Pass this token in the Authorization header as a Bearer token to access the protected routes.   
 
 ## API Documentation
