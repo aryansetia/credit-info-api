@@ -8,7 +8,11 @@ from dotenv import load_dotenv
 
 load_dotenv()  
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:postgres@db:5433/credit-info")
+
+if not DATABASE_URL: 
+    raise ValueError("DATABASE_URL environment variable is not set")
+
 
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -26,9 +30,9 @@ def get_db() -> Generator:
 
 def create_tables():
     try:
-        from models.annual_information import AnnualInformation
-        from models.loan import Loan
-        from models.company import Company
+        from src.models.annual_information import AnnualInformation
+        from src.models.loan import Loan
+        from src.models.company import Company
 
         Base.metadata.create_all(bind=engine)
         print("Tables created successfully")

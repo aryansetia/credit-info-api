@@ -1,13 +1,14 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from db import get_db
-from models.company import Company
-from models.annual_information import AnnualInformation
-from models.loan import Loan
-from schemas.annual_information import AnnualInformationCreate, AnnualInformationUpdate
-from schemas.loan import LoanCreate, LoanUpdate
+from src.db import get_db
+from src.models.company import Company
+from src.models.annual_information import AnnualInformation
+from src.models.loan import Loan
+from src.schemas.annual_information import AnnualInformationCreate, AnnualInformationUpdate
+from src.schemas.loan import LoanCreate, LoanUpdate
 from typing import List, Optional
+from src.authentication.auth import get_current_user
 
 
 router = APIRouter()
@@ -39,7 +40,7 @@ def calculate_credit(company_id: int, db: Session):
 
 # GET - to fetch credits information of all the companies
 @router.get("/credits", response_model=List[dict], status_code=status.HTTP_200_OK)
-def get_all_credits(db: Session = Depends(get_db)):
+def get_all_credits(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     companies = db.query(Company).all()
     credits = []
     if not companies:
@@ -65,7 +66,7 @@ def get_all_credits(db: Session = Depends(get_db)):
 
 # GET - to fetch the credit information of a specific company using its id
 @router.get("/credits/{company_id}", response_model=dict, status_code=status.HTTP_200_OK)
-def get_credit_by_company_id(company_id: str, db: Session = Depends(get_db)):
+def get_credit_by_company_id(company_id: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user) ):
     company = db.query(Company).filter(
         Company.company_id == company_id).first()
     
@@ -94,7 +95,7 @@ def get_credit_by_company_id(company_id: str, db: Session = Depends(get_db)):
 def add_credit_info(company_id: str,
                     annual_info: AnnualInformationCreate,
                     loan_info: LoanCreate,
-                    db: Session = Depends(get_db)):
+                    db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
 
     # Check if company exists
     company = db.query(Company).filter(
@@ -137,7 +138,7 @@ def add_credit_info(company_id: str,
 
 # PUT - simulate updating credit information of a company 
 @router.put("/credits/{company_id}", response_model=dict, status_code=status.HTTP_200_OK)
-def update_credit_info(company_id: str, annual_info: Optional[AnnualInformationUpdate] = None, loan_info: Optional[LoanUpdate] = None, db: Session = Depends(get_db)):
+def update_credit_info(company_id: str, annual_info: Optional[AnnualInformationUpdate] = None, loan_info: Optional[LoanUpdate] = None, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     company = db.query(Company).filter(
         Company.company_id == company_id).first()
     if not company:
@@ -151,8 +152,8 @@ def update_credit_info(company_id: str, annual_info: Optional[AnnualInformationU
     )
   
 # DELETE - simulate deleting credit information of a company
-@router.delete("/credits/{company_id}", response_model=dict, status_code=status.HTTP_200_OK)
-def delete_credit_info(company_id: str, db: Session = Depends(get_db)):
+@router.delete("/credits/{company_id}", response_model=dict, status_code=status.HTTP_200_OK, )
+def delete_credit_info(company_id: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     company = db.query(Company).filter(
         Company.company_id == company_id).first()
     if not company:

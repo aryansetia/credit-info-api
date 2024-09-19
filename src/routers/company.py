@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-from db import get_db
-from models.company import Company
+from src.db import get_db
+from src.models.company import Company
 from fastapi.responses import JSONResponse
-from schemas.company import CompanyCreate, CompanyUpdate, CompanyResponse
+from src.schemas.company import CompanyCreate, CompanyUpdate, CompanyResponse
 
 
 router = APIRouter()

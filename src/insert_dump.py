@@ -1,18 +1,30 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from models.annual_information import AnnualInformation
-from models.loan import Loan
-from models.company import Company
-from db import Base, SessionLocal, DATABASE_URL
+from src.models.annual_information import AnnualInformation
+from src.models.loan import Loan
+from src.models.company import Company
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 from faker import Faker
 from datetime import datetime, timedelta
 import random
+import os
 
 fake = Faker()
 
-DATABASE_URL = DATABASE_URL
+Base = declarative_base()
+
+DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:postgres@db:5433/credit-info")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
 engine = create_engine(DATABASE_URL, echo=True)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+Base = declarative_base()
 
 # Create a new session
 def get_db():

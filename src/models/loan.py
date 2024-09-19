@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Float, String, Date, ForeignKey, Enum
 from sqlalchemy.orm import relationship
-from db import Base
+from src.db import Base
 import enum
 
 class LoanStatus(str, enum.Enum):

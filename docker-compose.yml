@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13.2
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=credit-info
+    ports:
+      - "5433:5433"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: fastapi
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/credit-info
+    command: uvicorn src.main:app --reload --workers 1 --host 0.0.0.0
