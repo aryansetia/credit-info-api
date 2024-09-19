@@ -15,5 +15,4 @@ ENV DATABASE_URL=postgresql://postgres:postgres@localhost/credit-info
 # Expose port 8000 for the FastAPI app
 EXPOSE 8000
 
-# Command to run the FastAPI app
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
